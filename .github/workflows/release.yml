@@ -23,12 +23,6 @@ jobs:
       - name: Build binaries
         run: make all
 
-      - name: Rename binaries
-        run: |
-          mv enter-linux speedtest-linux
-          mv enter-windows.exe speedtest-windows.exe
-          mv enter-macos speedtest-macos
-
       - name: Create Tag
         run: |
           git config user.name "github-actions[bot]"
@@ -43,9 +37,9 @@ jobs:
         with:
           tag_name: v${{ github.sha }}
           files: |
-            speedtest-linux
-            speedtest-windows.exe
-            speedtest-macos
+            enter-linux
+            enter-windows.exe
+            enter-macos
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
