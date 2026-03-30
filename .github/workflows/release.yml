@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-go@v5
         with:
@@ -31,16 +33,19 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "v$(git rev-parse --short HEAD)" -m "Release $(git rev-parse --short HEAD)"
-          git push origin "v$(git rev-parse --short HEAD)"
+          git tag -a "v${{ github.sha }}" -m "Release ${{ github.sha }}"
+          git push origin "v${{ github.sha }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ github.sha }}
           files: |
-            enter-linux
-            enter-windows.exe
-            enter-macos
+            speedtest-linux
+            speedtest-windows.exe
+            speedtest-macos
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
