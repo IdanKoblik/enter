@@ -27,6 +27,13 @@ jobs:
           mv enter-windows.exe speedtest-windows.exe
           mv enter-macos speedtest-macos
 
+      - name: Create Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v$(git rev-parse --short HEAD)" -m "Release $(git rev-parse --short HEAD)"
+          git push origin "v$(git rev-parse --short HEAD)"
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -34,5 +41,6 @@ jobs:
             enter-linux
             enter-windows.exe
             enter-macos
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
